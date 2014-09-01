@@ -36,4 +36,4 @@ def exchange():
         return 'error %s' % str(e)
     content = json.loads(response.content)
 
-    return render_template('/authorized_user.html')
+    return render_template('/authorized_user.html', auth_result=content)
