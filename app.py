@@ -16,8 +16,8 @@ app.config['SECRET_KEY'] = '123456790'
 #setattr(sys.modules['infrastructure'], 'db', db)
 
 # Authentication
-from areas.user.auth import user_app
-app.register_blueprint(blueprint=user_app, url_prefix='/user')
+from routes.authentication import authentication
+app.register_blueprint(blueprint=authentication.auth_app, url_prefix='/authorize')
 
 
 @app.route('/')
@@ -27,6 +27,14 @@ def home():
 @app.route("/favicon.ico")
 def favicon():
     return app.send_static_file("favicon.ico")
+
+@app.errorhandler(500)
+def internal_error(error):
+    return "500 error"
+
+@app.errorhandler(404)
+def not_found(error):
+    return "404 error",404
 
 
 if __name__ == '__main__':

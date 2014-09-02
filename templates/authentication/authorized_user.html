@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+
+{% block page_body %}
+<div class="fixed-height-spacer-150"></div>
+
+<div class="row col-md-6 col-md-offset-3">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">User authorized</h3>
+        </div>
+        <div class="panel-body">
+            <p><span class="label label-primary">User ID</span> {{ auth_result.user_id }}</p>
+            <!--
+            <p><span class="label label-primary">User Token</span> {{ auth_result.access_token }}</p>
+            -->
+        </div>
+    </div>
+</div>
+
+{% endblock %}

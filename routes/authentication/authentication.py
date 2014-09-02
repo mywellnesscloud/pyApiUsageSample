@@ -1,39 +1,50 @@
 import json
-from flask import Blueprint, redirect, request, render_template, session, jsonify
-import infrastructure
 import requests
+import infrastructure
+from flask import Blueprint, redirect, request, render_template, abort, session
+
 
 __author__ = 'carlozamagni'
 
 
 auth_app = Blueprint('catalog', __name__, static_folder='static', template_folder='templates')
 
-redirect_uri = ''
+redirect_uri = 'http://localhost:5000/authorize/exchange'
+oauth_step_1_url = 'https://usertestext.mywellness.com:13443/cloud/OAuthApplication/Login'
+oauth_step_2_url = 'http://servicestestext.mywellness.com/OAuth/58FB87D2-B9C1-45D1-83CE-F92C64E787AF/GetAccessToken'
+
 
 @auth_app.route('/')
 def authorize():
-    url = 'https://usertestext.mywellness.com:13443/cloud/OAuthApplication/Login?client_id=%s&redirect_uri=%s&scope=%s&state=state' % (infrastructure.my_wellness_api_app_id, redirect_uri, 'write')
+    url = '%s?client_id=%s&redirect_uri=%s&scope=%s&state=state' % (oauth_step_1_url, infrastructure.my_wellness_api_app_id, redirect_uri, 'write')
     return redirect(url)
+
 
 @auth_app.route('/exchange')
 def exchange():
     code = request.args.get('code')
-
     headers = {'Content-Type': 'application/json'}
 
     try:
-        authorize_url = 'http://servicestestext.mywellness.com/OAuth/58FB87D2-B9C1-45D1-83CE-F92C64E787AF/GetAccessToken'
-        request_payload = {'code': code, 'client_id': infrastructure.my_wellness_api_app_id,
+        request_payload = {'code': code,
+                           'client_id': infrastructure.my_wellness_api_app_id,
                            'client_secret': infrastructure.my_wellness_api_app_secret,
                            'grant_type': 'authorization_code',
                            'redirect_uri': redirect_uri}
 
-        response = requests.post(authorize_url,
+        response = requests.post(oauth_step_2_url,
                                  data=json.dumps(request_payload),
                                  headers=headers)
+
+        content = json.loads(response.content)
+
+        if content.get('error_code', None) is not None:
+            abort(500)
+
+        session['user_token'] = content['access_token']
+        session['user_id'] = content['user_id']
+
     except Exception, e:
+        abort(500)
 
-        return 'error %s' % str(e)
-    content = json.loads(response.content)
-
-    return render_template('/authorized_user.html', auth_result=content)
+    return render_template('/authentication/authorized_user.html', auth_result=content)
