@@ -30,11 +30,11 @@ def favicon():
 
 @app.errorhandler(500)
 def internal_error(error):
-    return "500 error"
+    return render_template('500.html')
 
 @app.errorhandler(404)
 def not_found(error):
-    return "404 error",404
+    return render_template('404.html')
 
 
 if __name__ == '__main__':
