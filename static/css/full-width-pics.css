@@ -12,6 +12,10 @@ body {
     height: 150px;
 }
 
+.error-404 {
+    font-size: 100px;
+}
+
 .image-bg-fluid-height,
 .image-bg-fixed-height {
     text-align: center;

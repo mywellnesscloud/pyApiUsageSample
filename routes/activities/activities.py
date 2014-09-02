@@ -10,7 +10,6 @@ __author__ = 'carlozamagni'
 
 activities_app = Blueprint('activities', __name__, static_folder='static', template_folder='templates')
 
-base_url = 'https://servicestestext.mywellness.com'
 
 @activities_app.route('/upload', methods=['GET', 'POST'])
 def activity_upload():
@@ -26,18 +25,23 @@ def activity_upload():
 
     uploaded_file = request.files['file']
     if uploaded_file and _is_valid_file(uploaded_file):
-        url = '%s/api/v1/User/%s/UploadActivity' % (base_url, user_id)
-        payload = {'Token': user_token,
+        url = '%s/api/v1/User/%s/UploadActivity' % (infrastructure.my_wellness_api_base_url, user_id)
+        payload = {'Token': unicode(user_token),
                    'DataType': (uploaded_file.filename.split('.')[-1]).lower(),
                    'Data': base64.b64encode(uploaded_file.read())}
 
-        req = requests.post(url=url,
+        res = requests.post(url=url,
                             data=json.dumps(payload),
-                            headers={'Content-Type': 'application/json'})
+                            headers={'Content-Type': 'application/json',
+                                     'X-MWAPPS-OAUTHCLIENTID': infrastructure.my_wellness_api_app_id},
+                            verify=infrastructure.verify_ssl_cert)
 
-        print(req.content)
+        print(res.content)
 
-        return render_template('/activities/upload_result.html', result='')
+        result = json.loads(res.content)
+        success = False if 'errors' in res.content else True
+
+        return render_template('/activities/upload_result.html', success=success, result=result)
 
 
 def _is_valid_file(file):

@@ -10,8 +10,8 @@ __author__ = 'carlozamagni'
 auth_app = Blueprint('authorize', __name__, static_folder='static', template_folder='templates')
 
 redirect_uri = 'http://localhost:5000/authorize/exchange'
-oauth_step_1_url = 'https://usertestext.mywellness.com:13443/cloud/OAuthApplication/Login'
-oauth_step_2_url = 'http://servicestestext.mywellness.com/OAuth/58FB87D2-B9C1-45D1-83CE-F92C64E787AF/GetAccessToken'
+oauth_step_1_url = '%s/cloud/OAuthApplication/Login' % infrastructure.my_wellness_api_auth_base_url
+oauth_step_2_url = '%s/OAuth/58FB87D2-B9C1-45D1-83CE-F92C64E787AF/GetAccessToken' % 'https://servicestestext.mywellness.com'
 
 
 @auth_app.route('/')
