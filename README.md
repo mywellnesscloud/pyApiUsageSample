@@ -1,6 +1,8 @@
 
 # MyWellness API sample app
 
+### http://mywellnessapisample.herokuapp.com/
+
 This app is provided as an example and covers the following topics:
 
 * obtaining user's authorization to access MyWellness informations via api
