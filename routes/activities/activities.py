@@ -13,8 +13,8 @@ base_url = 'http://servicestestext.mywellness.com'
 
 @activities_app.route('/upload', methods=['GET', 'POST'])
 def activity_upload():
-    user_id = session['user_id']
-    user_token = session['user_token']
+    user_id = session.get('user_id', None)
+    user_token = session.get('user_token', None)
 
     if user_id is None or user_token is None:
         # go and authorize before uploading
@@ -23,11 +23,11 @@ def activity_upload():
     if request.method == 'GET':
         return render_template('/activities/upload.html')
 
-    uploaded_file = request.files['file']
-    if file and _is_valid_file(uploaded_file):
+    uploaded_file = request.files[0]
+    if uploaded_file and _is_valid_file(uploaded_file):
         url = '%s/api/v1/User/%s/UploadActivity' % (base_url, user_id)
         payload = {'Token': user_token,
-                   'DataType': (file.filename.split('.')[-1]).lower(),
+                   'DataType': (uploaded_file.filename.split('.')[-1]).lower(),
                    'Data': ''}
 
         requests.post(url=url, data=json.dumps(payload), headers={})
