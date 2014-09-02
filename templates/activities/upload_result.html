@@ -5,14 +5,23 @@
 <div class="fixed-height-spacer-150"></div>
 
 <div class="row col-md-6 col-md-offset-3">
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h3 class="panel-title">Activity upload result</h3>
-        </div>
-        <div class="panel-body">
-            <p><span class="label label-primary">Result</span> </p>
+    {% if success %}
+        {% set paneltype = 'panel-success' %}
+        {% set message = 'OK' %}
+    {% else %}
+        {% set paneltype = 'panel-danger' %}
+        {% set message = result.errors[0].field %}
+    {% endif %}
+        <div class="panel {{ paneltype }}">
+            <div class="panel-heading">
+                <h3 class="panel-title">Activity upload result</h3>
+            </div>
+            <div class="panel-body">
+                <p><span class="label label-primary">Result</span>
+                    {{ message }}
+                </p>
+            </div>
         </div>
     </div>
-</div>
 
-{% endblock %}
+    {% endblock %}
