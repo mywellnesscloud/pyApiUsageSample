@@ -1,10 +1,24 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
+{% extends "base.html" %}
 
-</body>
-</html>
+
+{% block page_body %}
+<div class="fixed-height-spacer-150"></div>
+
+<form role="form">
+  <!--<div class="form-group">
+    <label for="exampleInputEmail1">Email address</label>
+    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+  </div>
+  <div class="form-group">
+    <label for="exampleInputPassword1">Password</label>
+    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+  </div>-->
+  <div class="form-group">
+    <label for="activityFile">Activity file</label>
+    <input type="file" id="activityFile">
+    <p class="help-block">Example block-level help text here.</p>
+  </div>
+  <button type="submit" class="btn btn-default">Upload</button>
+</form>
+
+{% endblock %}

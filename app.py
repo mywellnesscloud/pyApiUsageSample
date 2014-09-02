@@ -8,17 +8,13 @@ app = Flask(__name__)
 
 app.config['SECRET_KEY'] = '123456790'
 
-# db config
-#app.config['MONGODB_SETTINGS'] = {'DB': 'testing', 'HOST': 'mongodb://localhost:27017/bookly'}
-#db = MongoEngine()
-#db.init_app(app)
-
-#setattr(sys.modules['infrastructure'], 'db', db)
-
 # Authentication
 from routes.authentication import authentication
 app.register_blueprint(blueprint=authentication.auth_app, url_prefix='/authorize')
 
+# Activities
+from routes.activities import activities
+app.register_blueprint(blueprint=activities.activities_app, url_prefix='/activities')
 
 @app.route('/')
 def home():
