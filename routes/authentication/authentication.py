@@ -7,7 +7,7 @@ from flask import Blueprint, redirect, request, render_template, abort, session
 __author__ = 'carlozamagni'
 
 
-auth_app = Blueprint('catalog', __name__, static_folder='static', template_folder='templates')
+auth_app = Blueprint('authorize', __name__, static_folder='static', template_folder='templates')
 
 redirect_uri = 'http://localhost:5000/authorize/exchange'
 oauth_step_1_url = 'https://usertestext.mywellness.com:13443/cloud/OAuthApplication/Login'
