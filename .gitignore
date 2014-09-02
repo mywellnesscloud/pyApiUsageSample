@@ -1,5 +1,6 @@
-.idea/*
+.idea
 *.pyc
 .DS_Store
 venv
 external/*
+*.zip
