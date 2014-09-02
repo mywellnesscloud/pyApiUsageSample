@@ -56,6 +56,19 @@ section {
 .section-paragraph {
     margin: 30px 0;
 }
+
+
+.v-offset  { margin-top: 2px; }
+.v-offset1 { margin-top: 5px; }
+.v-offset2 { margin-top: 10px; }
+.v-offset3 { margin-top: 15px; }
+.v-offset4 { margin-top: 30px; }
+.v-offset5 { margin-top: 40px; }
+.v-offset6 { margin-top: 60px; }
+.v-offset7 { margin-top: 80px; }
+.v-offset8 { margin-top: 100px; }
+.v-offset9 { margin-top: 150px; }
+
 /*
 footer {
     margin: 50px 0;
