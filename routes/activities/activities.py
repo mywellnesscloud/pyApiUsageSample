@@ -1,3 +1,4 @@
+import base64
 import json
 import requests
 import infrastructure
@@ -9,7 +10,7 @@ __author__ = 'carlozamagni'
 
 activities_app = Blueprint('activities', __name__, static_folder='static', template_folder='templates')
 
-base_url = 'http://servicestestext.mywellness.com'
+base_url = 'https://servicestestext.mywellness.com'
 
 @activities_app.route('/upload', methods=['GET', 'POST'])
 def activity_upload():
@@ -23,14 +24,20 @@ def activity_upload():
     if request.method == 'GET':
         return render_template('/activities/upload.html')
 
-    uploaded_file = request.files[0]
+    uploaded_file = request.files['file']
     if uploaded_file and _is_valid_file(uploaded_file):
         url = '%s/api/v1/User/%s/UploadActivity' % (base_url, user_id)
         payload = {'Token': user_token,
                    'DataType': (uploaded_file.filename.split('.')[-1]).lower(),
-                   'Data': ''}
+                   'Data': base64.b64encode(uploaded_file.read())}
 
-        requests.post(url=url, data=json.dumps(payload), headers={})
+        req = requests.post(url=url,
+                            data=json.dumps(payload),
+                            headers={'Content-Type': 'application/json'})
+
+        print(req.content)
+
+        return render_template('/activities/upload_result.html', result='')
 
 
 def _is_valid_file(file):
