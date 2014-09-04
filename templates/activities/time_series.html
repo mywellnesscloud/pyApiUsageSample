@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block custom_header %}
+<script src="/static/js/Chart.min.js"></script>
+{% endblock %}
+
+{% block page_body %}
+<div class="fixed-height-spacer-150"></div>
+
+<div class="row col-md-6 col-md-offset-1">
+    <h3>Output for Time Series. <br><small>Data are referred to Aug. 2014</small></h3>
+    <div class="fixed-height-spacer-50"></div>
+</div>
+
+<div class="row col-md-6 col-md-offset-3">
+    <!-- Move, Calories, RunningDistance, CyclingDistance -->
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="active"><a href="/activities/timeseries/Move">Move</a></li>
+        <li><a href="/activities/timeseries/Calories">Calories</a></li>
+        <li class="disabled"><a href="/activities/timeseries/RunningDistance">Running Distance</a></li>
+        <li class="disabled"><a href="/activities/timeseries/CyclingDistance">Cycling Distance</a></li>
+    </ul>
+</div>
+
+<div class="row col-md-6 col-md-offset-1">
+    <canvas id="myChart" width="1000" height="400"></canvas>
+
+    {% if series_data is defined %}
+        <script type="text/javascript">
+            init();
+            window.onLoad = function () {
+                init();
+            };
+
+            function init() {
+                var ctx = document.getElementById("myChart").getContext("2d");
+
+
+                var data = {
+                    labels: {{ labels | safe }},
+                    datasets: [
+                        {
+                            label: 'time series',
+                            fillColor: "rgba(151,187,205,0.5)",
+                            strokeColor: "rgba(220,220,220,0.8)",
+                            highlightFill: "rgba(220,220,220,0.75)",
+                            highlightStroke: "rgba(220,220,220,1)",
+                            data: {{ series_data | safe }}
+                        }
+                    ]
+                }
+
+                var myNewChart = new Chart(ctx).Bar(data);
+            }
+
+        </script>
+    {% endif %}
+
+</div>
+
+
+
+
+{% endblock %}
