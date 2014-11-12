@@ -79,7 +79,7 @@ def activity_upload():
 
 def _is_valid_file(file):
     u_file_name = file.filename.upper()
-    return '.FIT' in u_file_name or '.TCX' in u_file_name
+    return '.FIT' in u_file_name or '.TCX' in u_file_name or '.JSON' in u_file_name
 
 
 def _get_current_user_or_login():
