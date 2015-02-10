@@ -1,4 +1,5 @@
 import json
+import urllib
 import requests
 import infrastructure
 from flask import Blueprint, redirect, request, render_template, abort, session
@@ -18,7 +19,8 @@ oauth_step_2_url = '%s/OAuth/58FB87D2-B9C1-45D1-83CE-F92C64E787AF/GetAccessToken
 
 @auth_app.route('/')
 def authorize():
-    url = '%s?client_id=%s&redirect_uri=%s&scope=%s&state=state&response_type=code' % (oauth_step_1_url, infrastructure.my_wellness_api_app_id, redirect_uri, 'write')
+    encoded_redirect_url = urllib.quote_plus(redirect_uri)
+    url = '%s?client_id=%s&redirect_uri=%s&scope=%s&response_type=code' % (oauth_step_1_url, infrastructure.my_wellness_api_app_id, encoded_redirect_url, 'read')
     return redirect(url)
 
 
